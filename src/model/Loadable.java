@@ -87,7 +87,6 @@ public class Loadable<T extends Car> {
     }
 
     private double calculateDistance(Car car) {
-        // Check if the transportCar is a TransportCar or Verkstad
         if (!(car instanceof Transportable)) {
             return 0.0;
         }

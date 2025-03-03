@@ -4,8 +4,10 @@ import model.interfaces.Drawable;
 import model.interfaces.Observable;
 import model.interfaces.Observer;
 import view.CarView;
+
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Random;
 import java.util.concurrent.CopyOnWriteArrayList;
 
 public class CarModel implements Observable {
@@ -14,8 +16,8 @@ public class CarModel implements Observable {
     private final List<Car> cars = new CopyOnWriteArrayList<>(); // concurrently safe
     private final List<Observer> observers = new ArrayList<>();
 
-    public void checkCollisionWithVolvoServiceShop(Car car) {
-        if (car instanceof Volvo240 volvo && isNearVolvoServiceShop(car)) {
+    public void checkCollisionWithVolvoVerkstad(Car car) {
+        if (car instanceof Volvo240 volvo && isNearVerkstad(car, volvoVerkstad)) {
             volvoVerkstad.loadCar(volvo);
             cars.remove(volvo);
             System.out.println(volvo.getModelName() + " is in the service shop");
@@ -23,9 +25,9 @@ public class CarModel implements Observable {
         }
     }
 
-    private boolean isNearVolvoServiceShop(Car car) {
-        return Math.abs(car.getX() - volvoVerkstad.getX()) < 10
-                && Math.abs(car.getY() - volvoVerkstad.getY()) < 10; // checking Y-axis is redundant
+    private boolean isNearVerkstad(Car car, Verkstad<? extends Car> verkstad) {
+        return Math.abs(car.getX() - verkstad.getX()) < 10
+                && Math.abs(car.getY() - verkstad.getY()) < 10; // checking Y-axis is redundant
     }
 
     public void addCar(Car car) {
@@ -33,7 +35,7 @@ public class CarModel implements Observable {
         notifyObservers();
     }
 
-    public void removeCar(){
+    public void removeCar() {
         cars.removeLast();
         notifyObservers();
     }
@@ -45,7 +47,7 @@ public class CarModel implements Observable {
         notifyObservers();
     }
 
-    public void checkBoundaryCollision(Car car) {
+    public void onBoundaryCollision(Car car) {
         int x = (int) Math.round(car.getX());
         if (x < 0 || x > CarView.width - 100) {
             car.turnLeft();
@@ -101,15 +103,16 @@ public class CarModel implements Observable {
         cars.forEach(Car::stopEngine);
         notifyObservers();
     }
-    
+
     public void addCarToPanel() {
         if (getCars().size() < MAX_CARS) {
             Car newCar = generateRandomCar();
+            newCar.setY(100 + (getCars().size() * 100));
             addCar(newCar);
         }
     }
+
     public void removeCarFromPanel() {
-        List<Car> cars = getCars();
         if (!cars.isEmpty()) {
             removeCar(); // Tar bort senaste bilen
         }
@@ -119,10 +122,10 @@ public class CarModel implements Observable {
         Random rand = new Random();
         int type = rand.nextInt(3); // Antal möjliga bilar
         return switch (type) {
-            case 0 -> new model.Volvo240();
-            case 1 -> new model.Saab95();
-            case 2 -> new model.Scania();
-            default -> new model.Volvo240();
+            case 0 -> new Volvo240();
+            case 1 -> new Saab95();
+            case 2 -> new Scania();
+            default -> new Volvo240();
         };
     }
 

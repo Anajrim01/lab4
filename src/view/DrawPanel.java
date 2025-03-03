@@ -12,7 +12,7 @@ import java.util.HashMap;
 import java.util.Objects;
 
 public class DrawPanel extends JPanel {
-    private final HashMap<Class, BufferedImage> carImages = new HashMap<>();
+    private final HashMap<Class<? extends Drawable>, BufferedImage> carImages = new HashMap<>();
     private final CarModel carModel;
 
     public DrawPanel(CarModel carModel) {
@@ -20,16 +20,20 @@ public class DrawPanel extends JPanel {
         this.setDoubleBuffered(true);
         this.setPreferredSize(new Dimension(CarView.width, CarView.height - 240));
         this.setBackground(Color.green);
-        try {
-            loadImages();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
+        loadImages();
     }
 
-    private void loadImages() throws IOException {
+    private void loadImages() {
         for (Drawable drawable : carModel.getDrawables()) {
-            carImages.put(drawable.getClass(), ImageIO.read(Objects.requireNonNull(DrawPanel.class.getResourceAsStream(("pics/" + drawable.getClass().getSimpleName() + ".jpg")))));
+            String imagePath = "pics/" + drawable.getClass().getSimpleName() + ".jpg";
+            try {
+                BufferedImage image = ImageIO.read(Objects.requireNonNull(DrawPanel.class.getResourceAsStream(imagePath)));
+                carImages.put(drawable.getClass(), image);
+            } catch (IOException e) {
+                System.err.println("Error loading image for " + drawable.getClass().getSimpleName() + ": " + e.getMessage());
+            } catch (NullPointerException e) {
+                System.err.println("Image file not found for " + drawable.getClass().getSimpleName() + " at path: " + imagePath);
+            }
         }
     }
 
@@ -43,6 +47,8 @@ public class DrawPanel extends JPanel {
 
             if (image != null) {
                 g.drawImage(image, x, y, null);
+            } else {
+                System.err.println("No image found for " + drawable.getClass().getSimpleName());
             }
         }
     }

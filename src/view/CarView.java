@@ -1,5 +1,6 @@
 package view;
 
+import model.CarModel;
 import model.interfaces.Observer;
 
 import javax.swing.*;
@@ -31,8 +32,8 @@ public class CarView extends JFrame implements Observer {
     public static final int height = 800;
     private final DrawPanel drawPanel;
 
-    public CarView(String framename, DrawPanel drawPanel) {
-        this.drawPanel = drawPanel;
+    public CarView(String framename, CarModel carModel) {
+        drawPanel = new DrawPanel(carModel);
         initComponents(framename);
     }
 
@@ -68,7 +69,7 @@ public class CarView extends JFrame implements Observer {
     }
 
     private void setupControlPanel() {
-        controlPanel.setLayout(new GridLayout(2, 3)); // 2 rows, 3 columns for 6 buttons
+        controlPanel.setLayout(new GridLayout(3, 3)); // 3 rows, 3 columns for 9 buttons
         controlPanel.add(gasButton);
         controlPanel.add(turboOnButton);
         controlPanel.add(liftBedButton);
@@ -137,6 +138,14 @@ public class CarView extends JFrame implements Observer {
 
     public void addStopListener(ActionListener listener) {
         stopButton.addActionListener(listener);
+    }
+
+    public void addAddCarListener(ActionListener listener) { //Nya metoder
+        addCarButton.addActionListener(listener);
+    }
+
+    public void addRemoveListener(ActionListener listener) { //Nya metoder
+        removeCarButton.addActionListener(listener);
     }
 
     public int getGasAmount() {
