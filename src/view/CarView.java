@@ -24,6 +24,9 @@ public class CarView extends JFrame implements Observer {
     JButton startButton = new JButton("Start all cars");
     JButton stopButton = new JButton("Stop all cars");
 
+    JButton addCarButton = new JButton("Add car");  //Nya knappar
+    JButton removeCarButton = new JButton("Remove car");   //Nya knappar
+
     public static final int width = 800;
     public static final int height = 800;
     private final DrawPanel drawPanel;
@@ -72,6 +75,8 @@ public class CarView extends JFrame implements Observer {
         controlPanel.add(brakeButton);
         controlPanel.add(turboOffButton);
         controlPanel.add(lowerBedButton);
+        controlPanel.add(addCarButton);
+        controlPanel.add(removeCarButton);
 
         controlPanel.setPreferredSize(new Dimension((width / 2) + 4, 200));
         controlPanel.setBackground(Color.CYAN);
