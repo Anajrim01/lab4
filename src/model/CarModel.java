@@ -100,7 +100,8 @@ public class CarModel implements Observable {
         cars.forEach(Car::stopEngine);
         notifyObservers();
     }
-        public void addCarToPanel() {
+    
+    public void addCarToPanel() {
         if (getCars().size() < MAX_CARS) {
             Car newCar = generateRandomCar();
             addCar(newCar);
