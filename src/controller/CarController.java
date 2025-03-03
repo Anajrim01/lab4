@@ -34,6 +34,10 @@
             // Start/Stop engine buttons
             carView.addStartListener(e -> carModel.startAllCars());
             carView.addStopListener(e -> carModel.stopAllCars());
+
+            // Add/Remove car buttons
+            carView.addAddCarListener(e -> carModel.addCarToPanel());
+            carView.addRemoveListener(e -> carModel.removeCarFromPanel());
         }
 
         private void updateView() {
