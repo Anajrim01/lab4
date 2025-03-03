@@ -9,6 +9,7 @@ import java.util.List;
 import java.util.concurrent.CopyOnWriteArrayList;
 
 public class CarModel implements Observable {
+    private static final int MAX_CARS = 10;
     private final Verkstad<Volvo240> volvoVerkstad = new Verkstad<>(5);
     private final List<Car> cars = new CopyOnWriteArrayList<>(); // concurrently safe
     private final List<Observer> observers = new ArrayList<>();
