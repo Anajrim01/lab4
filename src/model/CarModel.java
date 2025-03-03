@@ -100,6 +100,29 @@ public class CarModel implements Observable {
         cars.forEach(Car::stopEngine);
         notifyObservers();
     }
+        public void addCarToPanel() {
+        if (getCars().size() < MAX_CARS) {
+            Car newCar = generateRandomCar();
+            addCar(newCar);
+        }
+    }
+    public void removeCarFromPanel() {
+        List<Car> cars = getCars();
+        if (!cars.isEmpty()) {
+            removeCar(); // Tar bort senaste bilen
+        }
+    }
+
+    private Car generateRandomCar() {
+        Random rand = new Random();
+        int type = rand.nextInt(3); // Antal möjliga bilar
+        return switch (type) {
+            case 0 -> new model.Volvo240();
+            case 1 -> new model.Saab95();
+            case 2 -> new model.Scania();
+            default -> new model.Volvo240();
+        };
+    }
 
     public List<Car> getCars() {
         return cars;
