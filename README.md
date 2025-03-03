@@ -1,4 +1,4 @@
-# Car Simulation Project
+# Lab 4
 
 This project is a car simulation application implemented using the Model-View-Controller (MVC) design pattern. It allows users to interact with different types of cars, control their movement, and visualize their positions on a graphical interface.
 
