@@ -34,19 +34,19 @@ This car simulation project is developed to demonstrate the use of MVC design pa
 │   ├── Scania.java
 │   ├── Volvo240.java
 │   ├── Verkstad.java
-│   └── interfaces
-│       ├── Drawable.java
-│       ├── Movable.java
-│       ├── TransportCar.java
-|       ├── Observable.java
-|       └── Observer.java
+│   ├── interfaces
+│   │   ├── Drawable.java
+│   │   ├── Movable.java
+│   │   ├── TransportCar.java
+|   │   ├── Observable.java
+|   │   └── Observer.java
+|   └── exceptions
+│       ├── FullCapacityException.java
+│       ├── LoadException.java
+│       └── UnloadException.java
 ├── view
 │   ├── CarView.java
-│   ├── DrawPanel.java
-├── exceptions
-│   ├── FullCapacityException.java
-│   ├── LoadException.java
-│   └── UnloadException.java
+│   └── DrawPanel.java
 └── Startup.java
 
 ```
