@@ -1,79 +1,99 @@
 package model;
 
 import model.exceptions.*;
-import model.interfaces.TransportCar;
+import model.interfaces.Transportable;
 
 import java.util.Stack;
 
 public class Loadable<T extends Car> {
-    private final int MAX_CARS;
+    private final int maxCars;
     private final Stack<T> carStack = new Stack<>();
-    private final Car transport;
+    private final Car transportCar;
 
-    private static final double MAX_DISTANCE = 2;
+    private static final double MAX_DISTANCE = 2.0;
+    private static final double MAX_ANGLE = 70.0;
     private double angle = 0;
 
     public Loadable(Car transportCar, int maxCars) {
-        this.MAX_CARS = maxCars;
-        this.transport = transportCar;
+        if (maxCars < 0) {
+            throw new IllegalArgumentException("Maximum number of cars must be non-negative.");
+        }
+        this.maxCars = maxCars;
+        this.transportCar = transportCar;
     }
 
     public void loadCar(T car) {
-        if (!validateLoad(car))
-            throw new FullCapacityException("There's no space for this vehicle.");;
+        if (!canLoadCar(car)) {
+            throw new FullCapacityException("Cannot load car: either full capacity or other validation conditions not met.");
+        }
         carStack.push(car);
     }
 
     public T unloadCar() {
-        if (angle != 0 || carStack.isEmpty())
-            throw new UnloadException("Unloading not allowed in current state");
+        if (!canUnloadCar()) {
+            throw new UnloadException("Unloading not allowed in current state.");
+        }
         return carStack.pop();
     }
 
-    public void lower(double deg) {
-        if (angle - deg >= 0 && transport.getCurrentSpeed() == 0) {
-            angle -= deg;
-        } else {
-            throw new IllegalArgumentException("Cannot lower platform below 0 degrees.");
+    public void lower(double degrees) {
+        if (degrees < 0) {
+            throw new IllegalArgumentException("Degrees must be positive for lowering.");
         }
+        if (transportCar.getCurrentSpeed() != 0) {
+            throw new PlatformException("Cannot lower platform while moving.");
+        }
+        angle = Math.max(angle - degrees, 0);
     }
 
-    public void raise(double deg) {
-        if (deg < 0) throw new IllegalArgumentException("Degrees must be positive");
-        if (transport.getCurrentSpeed() != 0) {
-            throw new PlatformException("Platform adjustment while moving");
+    public void raise(double degrees) {
+        if (degrees < 0) {
+            throw new IllegalArgumentException("Degrees must be positive for raising.");
         }
-        if (angle + deg > 70) {
-            throw new PlatformException(
-                    String.format("Angle must be between 0 and %.1f degrees", 70.0));
+        if (transportCar.getCurrentSpeed() != 0) {
+            throw new PlatformException("Cannot raise platform while moving.");
         }
-        angle += deg;
-    }
-
-    public void setCarsPosition() {
-        for (T car : carStack) {
-            car.setX(transport.getX());
-            car.setY(transport.getY());
-        }
+        angle = Math.min(angle + degrees, MAX_ANGLE);
     }
 
     public double getAngle() {
         return angle;
     }
 
-    protected boolean validateLoad(Car car) {
-        return angle == 0 &&
-                carStack.size() < MAX_CARS &&
-                !(car instanceof TransportCar) &&
-                calculateDistance(car);
+    public void setCarsPosition() {
+        for (T car : carStack) {
+            car.setX(transportCar.getX());
+            car.setY(transportCar.getY());
+        }
     }
 
-    private boolean calculateDistance(Car car) {
-        if (transport == null) return true;
-        if (Math.sqrt(Math.pow(car.getX() - transport.getX(), 2) +
-                Math.pow(car.getY() - transport.getY(), 2)) > MAX_DISTANCE) {
-            throw new LoadException("Car is too far away.");
+    protected boolean canLoadCar(T car) {
+        return angle == 0 &&
+                carStack.size() < maxCars &&
+                !(car instanceof Transportable) &&
+                isWithinDistance(car);
+    }
+
+    private boolean canUnloadCar() {
+        return angle == 0 && !carStack.isEmpty();
+    }
+
+    private boolean isWithinDistance(Car car) {
+        double distance = calculateDistance(car);
+        if (distance > MAX_DISTANCE) {
+            throw new LoadException("Car is too far away to be loaded.");
         }
         return true;
+    }
+
+    private double calculateDistance(Car car) {
+        // Check if the transportCar is a TransportCar or Verkstad
+        if (!(car instanceof Transportable)) {
+            return 0.0;
+        }
+
+        double dx = car.getX() - transportCar.getX();
+        double dy = car.getY() - transportCar.getY();
+        return Math.sqrt(dx * dx + dy * dy);
     }
 }

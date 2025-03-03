@@ -9,6 +9,7 @@ public class Startup {
 
         DrawPanel drawPanel = new DrawPanel(model);
         CarView view = new CarView("CarSim 1.1", drawPanel);
+        model.addObserver(view); // Add the view as an observer to the model
 
         CarController controller = new CarController(model, view);
 
@@ -18,11 +19,11 @@ public class Startup {
     public static CarModel createModel(){
         CarModel model = new CarModel();
 
-        Car saab = new Saab95();
+        Car saab = CarFactory.createCar("Saab95");
         saab.setY(100);
-        Car volvo = new Volvo240();
+        Car volvo = CarFactory.createCar("Volvo240");
         volvo.setY(300);
-        Car scania = new Scania();
+        Car scania = CarFactory.createCar("Scania");
         scania.setY(200);
 
         model.addCar(saab);

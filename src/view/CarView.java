@@ -1,10 +1,12 @@
 package view;
 
+import model.interfaces.Observer;
+
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionListener;
 
-public class CarView extends JFrame {
+public class CarView extends JFrame implements Observer {
     JPanel controlPanel = new JPanel();
 
     JPanel gasPanel = new JPanel();
@@ -26,7 +28,6 @@ public class CarView extends JFrame {
     public static final int height = 800;
     private final DrawPanel drawPanel;
 
-    // Constructor
     public CarView(String framename, DrawPanel drawPanel) {
         this.drawPanel = drawPanel;
         initComponents(framename);
@@ -137,7 +138,8 @@ public class CarView extends JFrame {
         return (int) gasSpinner.getValue();
     }
 
-    public void updateDisplay() {
+    @Override
+    public void update() {
         drawPanel.repaint();
     }
 }

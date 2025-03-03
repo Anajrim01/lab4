@@ -40,6 +40,6 @@
             carModel.updateCarPositions();
             carModel.getCars().forEach(carModel::checkBoundaryCollision);
             carModel.getCars().forEach(carModel::checkCollisionWithVolvoServiceShop);
-            carView.updateDisplay();
+            // carView.updateDisplay(); using Observer pattern instead
         }
     }

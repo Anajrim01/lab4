@@ -36,10 +36,11 @@ public class DrawPanel extends JPanel {
     @Override
     protected void paintComponent(Graphics g) {
         super.paintComponent(g);
-        for (Drawable drawable : carModel.getDrawables() ) {
+        for (Drawable drawable : carModel.getDrawables()) {
             int x = (int) Math.round(drawable.getX());
             int y = (int) Math.round(drawable.getY());
             BufferedImage image = carImages.get(drawable.getClass());
+
             if (image != null) {
                 g.drawImage(image, x, y, null);
             }

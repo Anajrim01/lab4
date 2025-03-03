@@ -1,24 +1,27 @@
 package model;
 
-import model.interfaces.TransportCar;
+import model.interfaces.Transportable;
 
 import java.awt.*;
 
-public class Scania extends Car implements TransportCar {
+public class Scania extends Car implements Transportable {
     private final Loadable<Car> loadable = new Loadable<>(this, 0);
 
     public Scania() {
         super(2, Color.white, 600, "Scania");
     }
 
+    @Override
     public double getCurrentAngle() {
         return loadable.getAngle();
     }
 
+    @Override
     public void raisePlatform(double deg) {
         loadable.raise(deg);
     }
 
+    @Override
     public void lowerPlatform(double deg) {
         loadable.lower(deg);
     }
