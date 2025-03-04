@@ -51,6 +51,8 @@ This car simulation project is developed to demonstrate the use of MVC design pa
 
 ```
 
+![UML Diagram](https://github.com/user-attachments/assets/d5235838-9b44-474b-8505-7fa0cdfa75ee)
+
 ## Design Patterns
 
 - **MVC (Model-View-Controller):** The project follows MVC design pattern to separate concerns:
@@ -63,6 +65,7 @@ This car simulation project is developed to demonstrate the use of MVC design pa
 
 - **Factory Method Pattern:**
   - Used to instantiate different types of cars through `CarFactory`.
+
 
 ## Setup and Running the Application
 
