@@ -117,16 +117,9 @@ public class CarModel implements Observable {
             removeCar(); // Tar bort senaste bilen
         }
     }
-
+    
     private Car generateRandomCar() {
-        Random rand = new Random();
-        int type = rand.nextInt(3); // Antal möjliga bilar
-        return switch (type) {
-            case 0 -> new Volvo240();
-            case 1 -> new Saab95();
-            case 2 -> new Scania();
-            default -> new Volvo240();
-        };
+        return CarFactory.createCar(CarFactory.CarType.getRandomType());
     }
 
     public List<Car> getCars() {
