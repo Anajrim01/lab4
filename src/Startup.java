@@ -14,11 +14,11 @@ public class Startup {
     public static CarModel createModel(){
         CarModel model = new CarModel();
 
-        Car saab = CarFactory.createCar("Saab95");
+        Car saab = CarFactory.createCar(CarFactory.CarType.Saab95);
         saab.setY(100);
-        Car scania = CarFactory.createCar("Scania");
+        Car scania = CarFactory.createCar(CarFactory.CarType.Scania);
         scania.setY(200);
-        Car volvo = CarFactory.createCar("Volvo240");
+        Car volvo = CarFactory.createCar(CarFactory.CarType.Volvo240);
         volvo.setY(300);
 
         model.addCar(saab);
